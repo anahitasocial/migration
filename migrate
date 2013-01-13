@@ -10,7 +10,7 @@ print_color() {
     echo -e $2$1$COLOR_WHITE      
 }
 
-echo -e $COLOR_INFO
+echo $COLOR_INFO
 
 cat <<EOF
     
@@ -24,9 +24,20 @@ Before continueing please make  sure to follow the instruction at
 
 EOF
 
-echo -e $COLOR_WHITE
+echo $COLOR_WHITE
 
-read -p "Enter the path to the anahita installation ? " ANAHITA_PATH
+while true
+do
+read -p "Enter the path to the anahita installation ? " ANAHITA_PATH  < /dev/tty
+if [ ! -d $ANAHITA_PATH ]
+then
+    echo "Incorrect path. Please enter a correct path"
+else
+    break
+fi
+done
+
+start:
 
 echo 
 echo "... downloading migration files" 
