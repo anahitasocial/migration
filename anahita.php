@@ -6,6 +6,7 @@
  */
 function anahita_1() {	
     dbexec(dbparse(file_get_contents(dirname(__FILE__).'/data.sql')));
+    dbexec('UPDATE jos_modules SET params = \'title-1=Bazaar\nlink-1=index.php?option=com_bazaar\nicon-1=anahita.png\ntitle-2=Social Apps\nlink-2=index.php?option=com_apps\nicon-2=application_view_icons.png\ntitle-3=Plugins\nlink-3=index.php?option=com_plugins\nicon-3=brick.png\ntitle-4=Modules\nlink-4=index.php?option=com_modules\nicon-4=brick.png\ntitle-5=Templates\nlink-5=index.php?option=com_templates\nicon-5=color_management.png\ntitle-6=Extend\nlink-6=index.php?option=com_installer\nicon-6=package.png\ntitle-7=Configuration\nlink-7=index.php?option=com_config\nicon-7=cog.png\nquickfields=[{"icon":"anahita.png","link":"index.php?option=com_bazaar","title":"Bazaar"},{"icon":"application_view_icons.png","link":"index.php?option=com_apps","title":"Social Apps"},{"icon":"brick.png","link":"index.php?option=com_plugins","title":"Plugins"},{"icon":"brick.png","link":"index.php?option=com_modules","title":"Modules"},{"icon":"color_management.png","link":"index.php?option=com_templates","title":"Templates"},{"icon":"package.png","link":"index.php?option=com_installer","title":"Extend"},{"icon":"cog.png","link":"index.php?option=com_config","title":"Configuration"}]\n\n\' WHERE module LIKE \'mod_rokquicklinks\' ');
 }
 
 /**
@@ -91,7 +92,6 @@ function anahita_8() {
     }
     
     //migrating discussions to topics
-    
     dbexec("UPDATE jos_anahita_nodes SET `name` = 'topic_add'  WHERE `component` LIKE 'com_discussions' AND `name` LIKE 'new_topic'");
     dbexec("DELETE FROM jos_anahita_nodes WHERE `component` LIKE 'com_discussions' AND `name` IN ('edit_topic','new_reply','new_board')");
     
@@ -106,12 +106,13 @@ function anahita_8() {
             WHERE `permissions` LIKE '%com_discussions%' AND `type` LIKE 'AnSeEntityNode,AnSeEntityActor%'");
     
     //migrate edges
-    dbexec("UPDATE `jos_anahita_edges` SET `node_b_type` = REPLACE(`node_b_type`, 'com:discussions', 'com:topics')");
-    dbexec("UPDATE `jos_anahita_edges` SET `component` = 'com_topics' WHERE `component` LIKE 'com_discussions' ");
+    dbexec("UPDATE `jos_anahita_edges` SET `node_b_type` = REPLACE(`node_b_type`, 'com.discussions', 'com:topics')");
     
+    dbexec("DROP TABLE IF EXISTS `jos_topics_topics` ");
     dbexec("RENAME TABLE `jos_discussions_topics` TO `jos_topics_topics`");
     dbexec("ALTER TABLE `jos_topics_topics` CHANGE `discussions_topic_id` `id` BIGINT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT");
     
+    dbexec("DROP TABLE IF EXISTS `jos_topics_boards` ");
     dbexec("RENAME TABLE `jos_discussions_boards` TO `jos_topics_boards`");
     dbexec("ALTER TABLE `jos_topics_boards` CHANGE `discussions_board_id` `topics_board_id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT");
     
@@ -401,4 +402,11 @@ function anahita_18()
 {
 	dbexec("DELETE FROM jos_components WHERE `option`='com_media'");
 	dbexec("DELETE FROM jos_plugins WHERE `folder`='editors-xtd' AND `element`='image'");
+}
+
+function anahita_19()
+{
+	//performs a cleanup to remove the dangling edges
+	dbexec("delete edge.* from jos_anahita_nodes as node right join jos_anahita_edges as edge on edge.node_b_id = node.id where node.id is null");
+	dbexec("delete edge.* from jos_anahita_nodes as node right join jos_anahita_edges as edge on edge.node_a_id = node.id where node.id is null");
 }
