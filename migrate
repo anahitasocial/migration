@@ -11,7 +11,7 @@ print_color() {
 }
 
 echo $COLOR_INFO
-
+echo $1
 cat <<EOF
     
 /*******************************************************/
@@ -48,5 +48,5 @@ curl --progress-bar $DATA_FILE_URL -o $ANAHITA_PATH'/tmp/data.sql'
     
 echo 
 echo "Running migration. This may take a while .."
-echo `cd $ANAHITA_PATH && php cli/migrate.php -p $ANAHITA_PATH/tmp/anahita.php`
+echo $ANAHITA_PATH/cli/migrate.php -p $ANAHITA_PATH/tmp/anahita.php
 
