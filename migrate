@@ -42,7 +42,7 @@ echo
 echo "... downloading migration files" 
 echo
 
-curl --progress-bar $GITHUB_URL'/anahiat.php' -o $ANAHITA_PATH'/tmp/anahita.php'
+curl --progress-bar $GITHUB_URL'/anahita.php' -o $ANAHITA_PATH'/tmp/anahita.php'
 curl --progress-bar $GITHUB_URL'/data.sql' -o $ANAHITA_PATH'/tmp/data.sql'
 curl --progress-bar $GITHUB_URL'/store.php' -o $ANAHITA_PATH'/cli/components/com_migrator/store.php'
     
