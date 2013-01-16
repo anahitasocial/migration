@@ -28,9 +28,13 @@ echo $COLOR_WHITE
 while true
 do
 read -p "Enter the path to the anahita installation ? " ANAHITA_PATH  < /dev/tty
+if [[ $ANAHITA_PATH != /* ]]
+then
+	ANAHITA_PATH=`pwd`/$ANAHITA_PATH
+fi
 if [ ! -d $ANAHITA_PATH ] || [ ${#ANAHITA_PATH} -lt 1 ]
 then
-    echo "Incorrect path. Please enter a correct path"
+    echo "$ANAHITA_PATH is an incorrect path. Please enter a correct path"
 else
     break
 fi
