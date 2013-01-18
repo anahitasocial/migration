@@ -1,4 +1,3 @@
-
 //Set modified on to created on
 UPDATE jos_anahita_nodes SET modified_on = created_on WHERE modified_on = '0000-00-00 00:00:00';
 UPDATE jos_anahita_edges SET modified_on = created_on WHERE modified_on = '0000-00-00 00:00:00';
@@ -375,6 +374,8 @@ DROP TABLE IF EXISTS jos_weblinks;
 DROP TABLE IF EXISTS jos_newsfeeds;
 DROP TABLE IF EXISTS jos_contact_details;
 DROP TABLE IF EXISTS jos_content_rating;
+
+DROP TABLE IF EXISTS jos_tagmeta;
 
 UPDATE `jos_modules` SET `position` = REPLACE(`position`, 'content-bottom', 'maintop') WHERE `position` LIKE '%content-bottom%';
 
